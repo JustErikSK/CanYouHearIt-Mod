@@ -3,6 +3,8 @@ package net.withrage.canyouhearit.event;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.withrage.canyouhearit.event.events.DelayedDoorAction;
+import net.withrage.canyouhearit.event.events.DoorEvent;
 import net.withrage.canyouhearit.event.events.FootstepEvent;
 import net.withrage.canyouhearit.event.events.FootstepSequence;
 
@@ -19,6 +21,7 @@ public class ParanormalEventManager {
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
             activeSequences.removeIf(FootstepSequence::tick);
+            delayedDoorActions.removeIf(DelayedDoorAction::tick);
             return;
         }
 
@@ -69,14 +72,19 @@ public class ParanormalEventManager {
         selected.trigger(player);
     }
 
-    private final List<FootstepSequence> activeSequences = new ArrayList<>();
-
     private final List<ParanormalEvent> events = List.of(
-            new FootstepEvent(this)
+            new FootstepEvent(this),
+            new DoorEvent(this)
     );
+
+    private final List<FootstepSequence> activeSequences = new ArrayList<>();
+    private final List<DelayedDoorAction> delayedDoorActions = new ArrayList<>();
 
     public void addFootstepSequence(FootstepSequence sequence) {
         activeSequences.add(sequence);
     }
 
+    public void addDelayedDoorAction(DelayedDoorAction action) {
+        delayedDoorActions.add(action);
+    }
 }
