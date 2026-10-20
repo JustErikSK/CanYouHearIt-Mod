@@ -1,15 +1,12 @@
-
 package net.withrage.canyouhearit.event;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.withrage.canyouhearit.event.events.FootstepEvent;
+import net.withrage.canyouhearit.event.events.FootstepSequence;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ParanormalEventManager {
 
@@ -21,6 +18,7 @@ public class ParanormalEventManager {
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
+            activeSequences.removeIf(FootstepSequence::tick);
             return;
         }
 
@@ -71,7 +69,14 @@ public class ParanormalEventManager {
         selected.trigger(player);
     }
 
+    private final List<FootstepSequence> activeSequences = new ArrayList<>();
+
     private final List<ParanormalEvent> events = List.of(
-            new FootstepEvent()
+            new FootstepEvent(this)
     );
+
+    public void addFootstepSequence(FootstepSequence sequence) {
+        activeSequences.add(sequence);
+    }
+
 }
