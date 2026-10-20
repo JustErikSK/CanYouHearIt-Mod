@@ -4,15 +4,17 @@ package net.withrage.canyouhearit.event;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.withrage.canyouhearit.event.events.FootstepEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class ParanormalEventManager {
 
-    private static final int MIN_DELAY = 20 * 60;
-    private static final int MAX_DELAY = 20 * 180;
+    private static final int MIN_DELAY = 20 * 5; // Changed for testing, default values are 20 * 60
+    private static final int MAX_DELAY = 20 * 10; // Changed for testing, default values are 20 * 180
 
     private final Map<UUID, Integer> timers = new HashMap<>();
 
@@ -53,5 +55,23 @@ public class ParanormalEventManager {
     }
 
     private void triggerRandomEvent(ServerPlayer player) {
+
+        List<ParanormalEvent> availableEvents = events.stream()
+                .filter(event -> event.canTrigger(player))
+                .toList();
+
+        if (availableEvents.isEmpty()) {
+            return;
+        }
+
+        ParanormalEvent selected = availableEvents.get(
+                player.getRandom().nextInt(availableEvents.size())
+        );
+
+        selected.trigger(player);
     }
+
+    private final List<ParanormalEvent> events = List.of(
+            new FootstepEvent()
+    );
 }
