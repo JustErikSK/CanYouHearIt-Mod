@@ -2,6 +2,8 @@ package net.withrage.canyouhearit.event.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,6 +51,15 @@ public class ChestEvent implements ParanormalEvent {
         BlockState state = level.getBlockState(pos);
 
         level.blockEvent(pos, state.getBlock(), 1, 1);
+
+        level.playSound(
+                null,
+                pos,
+                SoundEvents.CHEST_OPEN,
+                SoundSource.BLOCKS,
+                0.5F,
+                0.9F + player.getRandom().nextFloat() * 0.1F
+        );
 
         int delay = 40 + player.getRandom().nextInt(61);
 
