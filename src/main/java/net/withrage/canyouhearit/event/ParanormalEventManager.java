@@ -3,10 +3,7 @@ package net.withrage.canyouhearit.event;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.withrage.canyouhearit.event.events.DelayedDoorAction;
-import net.withrage.canyouhearit.event.events.DoorEvent;
-import net.withrage.canyouhearit.event.events.FootstepEvent;
-import net.withrage.canyouhearit.event.events.FootstepSequence;
+import net.withrage.canyouhearit.event.events.*;
 
 import java.util.*;
 
@@ -22,6 +19,7 @@ public class ParanormalEventManager {
         if (event.phase != TickEvent.Phase.END) {
             activeSequences.removeIf(FootstepSequence::tick);
             delayedDoorActions.removeIf(DelayedDoorAction::tick);
+            activeKnockingSequences.removeIf(KnockingSequence::tick);
             return;
         }
 
@@ -74,17 +72,15 @@ public class ParanormalEventManager {
 
     private final List<ParanormalEvent> events = List.of(
             new FootstepEvent(this),
-            new DoorEvent(this)
+            new DoorEvent(this),
+            new KnockingEvent(this)
     );
 
     private final List<FootstepSequence> activeSequences = new ArrayList<>();
     private final List<DelayedDoorAction> delayedDoorActions = new ArrayList<>();
+    private final List<KnockingSequence> activeKnockingSequences = new ArrayList<>();
 
-    public void addFootstepSequence(FootstepSequence sequence) {
-        activeSequences.add(sequence);
-    }
-
-    public void addDelayedDoorAction(DelayedDoorAction action) {
-        delayedDoorActions.add(action);
-    }
+    public void addFootstepSequence(FootstepSequence sequence) {activeSequences.add(sequence);}
+    public void addDelayedDoorAction(DelayedDoorAction action) {delayedDoorActions.add(action);}
+    public void addKnockingSequence(KnockingSequence sequence) {activeKnockingSequences.add(sequence);}
 }
