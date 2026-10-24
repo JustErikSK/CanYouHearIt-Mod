@@ -112,8 +112,13 @@ public class KnockingSequence {
     private void openDoor() {
         BlockState state = level.getBlockState(pos);
 
+        if (state.is(Blocks.IRON_DOOR)) {
+            return;
+        }
+
         if (state.getBlock() instanceof DoorBlock door
                 && !state.getValue(DoorBlock.OPEN)) {
+
             door.setOpen(null, level, state, pos, true);
         }
     }

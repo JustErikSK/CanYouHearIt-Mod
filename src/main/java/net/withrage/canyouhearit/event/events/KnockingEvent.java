@@ -20,12 +20,12 @@ public class KnockingEvent implements ParanormalEvent {
     public boolean canTrigger(ServerPlayer player) {
         return player.isAlive()
                 && !player.isSpectator()
-                && !DoorUtils.findNearbyDoors(player).isEmpty();
+                && !DoorUtils.findNearbyDoors(player, false).isEmpty();
     }
 
     @Override
     public void trigger(ServerPlayer player) {
-        List<BlockPos> doors = DoorUtils.findNearbyDoors(player);
+        List<BlockPos> doors = DoorUtils.findNearbyDoors(player, false);
 
         if (doors.isEmpty()) {
             return;
