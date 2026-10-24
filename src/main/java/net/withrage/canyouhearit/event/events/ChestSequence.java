@@ -1,0 +1,32 @@
+package net.withrage.canyouhearit.event.events;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class ChestSequence {
+
+    private final ServerLevel level;
+    private final BlockPos pos;
+    private int remainingTicks;
+
+    public ChestSequence(ServerLevel level, BlockPos pos, int delay) {
+        this.level = level;
+        this.pos = pos.immutable();
+        this.remainingTicks = delay;
+    }
+
+    public boolean tick() {
+        if (--remainingTicks > 0) {
+            return false;
+        }
+
+        if (level.getBlockEntity(pos) instanceof ChestBlockEntity) {
+            BlockState state = level.getBlockState(pos);
+
+            level.blockEvent(pos, state.getBlock(), 1, 0);
+        }
+        return true;
+    }
+}
