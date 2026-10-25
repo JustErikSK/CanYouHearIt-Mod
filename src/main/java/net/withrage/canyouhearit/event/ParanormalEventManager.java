@@ -21,6 +21,7 @@ public class ParanormalEventManager {
             delayedDoorActions.removeIf(DelayedDoorAction::tick);
             activeKnockingSequences.removeIf(KnockingSequence::tick);
             activeChestSequences.removeIf(ChestSequence::tick);
+            activeTrapdoorSequences.removeIf(TrapdoorSequence::tick);
             return;
         }
 
@@ -75,16 +76,19 @@ public class ParanormalEventManager {
             new FootstepEvent(this),
             new DoorEvent(this),
             new KnockingEvent(this),
-            new ChestEvent(this)
+            new ChestEvent(this),
+            new TrapdoorEvent(this)
     );
 
     private final List<FootstepSequence> activeSequences = new ArrayList<>();
     private final List<DelayedDoorAction> delayedDoorActions = new ArrayList<>();
     private final List<KnockingSequence> activeKnockingSequences = new ArrayList<>();
     private final List<ChestSequence> activeChestSequences = new ArrayList<>();
+    private final List<TrapdoorSequence> activeTrapdoorSequences = new ArrayList<>();
 
     public void addFootstepSequence(FootstepSequence sequence) {activeSequences.add(sequence);}
     public void addDelayedDoorAction(DelayedDoorAction action) {delayedDoorActions.add(action);}
     public void addKnockingSequence(KnockingSequence sequence) {activeKnockingSequences.add(sequence);}
     public void addChestSequence(ChestSequence sequence) {activeChestSequences.add(sequence);}
+    public void addTrapdoorSequence(TrapdoorSequence sequence) {activeTrapdoorSequences.add(sequence);}
 }
