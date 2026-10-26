@@ -1,0 +1,17 @@
+{
+  "whisper": {
+    "sounds": [
+      "canyouhearit:behind_you",
+      "canyouhearit:breathing",
+      "canyouhearit:can_you_hear_me",
+      "canyouhearit:come_here",
+      "canyouhearit:dont_look",
+      "canyouhearit:hello",
+      "canyouhearit:hey",
+      "canyouhearit:humming",
+      "canyouhearit:i_see_you",
+      "canyouhearit:shhh",
+      "canyouhearit:unintelligible_whisper"
+    ]
+  }
+}
