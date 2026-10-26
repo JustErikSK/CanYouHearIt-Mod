@@ -17,13 +17,14 @@ public class ParanormalEventManager {
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
-            activeSequences.removeIf(FootstepSequence::tick);
-            delayedDoorActions.removeIf(DelayedDoorAction::tick);
-            activeKnockingSequences.removeIf(KnockingSequence::tick);
-            activeChestSequences.removeIf(ChestSequence::tick);
-            activeTrapdoorSequences.removeIf(TrapdoorSequence::tick);
             return;
         }
+
+        activeSequences.removeIf(FootstepSequence::tick);
+        delayedDoorActions.removeIf(DelayedDoorAction::tick);
+        activeKnockingSequences.removeIf(KnockingSequence::tick);
+        activeChestSequences.removeIf(ChestSequence::tick);
+        activeTrapdoorSequences.removeIf(TrapdoorSequence::tick);
 
         for (ServerPlayer player : event.getServer()
                 .getPlayerList().getPlayers()) {
@@ -56,32 +57,49 @@ public class ParanormalEventManager {
     }
 
     private void triggerRandomEvent(ServerPlayer player) {
-
-        List<ParanormalEvent> availableEvents = events.stream()
-                .filter(event -> event.canTrigger(player))
+        List<WeightedEvent> availableEvents = events.stream()
+                .filter(entry -> entry.weight() > 0)
+                .filter(entry -> entry.event().canTrigger(player))
                 .toList();
 
         if (availableEvents.isEmpty()) {
             return;
         }
 
-        ParanormalEvent selected = availableEvents.get(
-                player.getRandom().nextInt(availableEvents.size())
-        );
+        int totalWeight = availableEvents.stream()
+                .mapToInt(WeightedEvent::weight)
+                .sum();
 
-        selected.trigger(player);
+        int randomWeight = player.getRandom().nextInt(totalWeight);
+
+        for (WeightedEvent entry : availableEvents) {
+            randomWeight -= entry.weight();
+
+            if (randomWeight < 0) {
+                entry.event().trigger(player);
+
+                // Temporary debug output
+                System.out.println(
+                        "[Can You Hear It?] Triggered: "
+                                + entry.event().getClass().getSimpleName()
+                                + " | Weight: " + entry.weight()
+                                + " | Player: " + player.getName().getString()
+                );
+                return;
+            }
+        }
     }
 
-    private final List<ParanormalEvent> events = List.of(
-            new FootstepEvent(this),
-            new DoorEvent(this),
-            new KnockingEvent(this),
-            new ChestEvent(this),
-            new TrapdoorEvent(this),
-            new TorchEvent(),
-            new WhisperEvent(),
-            new ParticleEvent(),
-            new CaveAmbientEvent()
+    private final List<WeightedEvent> events = List.of(
+            new WeightedEvent(new FootstepEvent(this), 25),
+            new WeightedEvent(new DoorEvent(this), 16),
+            new WeightedEvent(new KnockingEvent(this), 16),
+            new WeightedEvent(new ChestEvent(this), 10),
+            new WeightedEvent(new TrapdoorEvent(this), 10),
+            new WeightedEvent(new TorchEvent(), 4),
+            new WeightedEvent(new WhisperEvent(), 10),
+            new WeightedEvent(new ParticleEvent(), 2),
+            new WeightedEvent(new CaveAmbientEvent(), 7)
     );
 
     private final List<FootstepSequence> activeSequences = new ArrayList<>();
