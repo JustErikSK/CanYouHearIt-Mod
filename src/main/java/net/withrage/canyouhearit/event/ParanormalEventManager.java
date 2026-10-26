@@ -78,7 +78,8 @@ public class ParanormalEventManager {
             new KnockingEvent(this),
             new ChestEvent(this),
             new TrapdoorEvent(this),
-            new TorchEvent()
+            new TorchEvent(),
+            new WhisperEvent()
     );
 
     private final List<FootstepSequence> activeSequences = new ArrayList<>();
