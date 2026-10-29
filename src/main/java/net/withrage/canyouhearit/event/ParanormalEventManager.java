@@ -77,14 +77,6 @@ public class ParanormalEventManager {
 
             if (randomWeight < 0) {
                 entry.event().trigger(player);
-
-                // Temporary debug output
-                System.out.println(
-                        "[Can You Hear It?] Triggered: "
-                                + entry.event().getClass().getSimpleName()
-                                + " | Weight: " + entry.weight()
-                                + " | Player: " + player.getName().getString()
-                );
                 return;
             }
         }
