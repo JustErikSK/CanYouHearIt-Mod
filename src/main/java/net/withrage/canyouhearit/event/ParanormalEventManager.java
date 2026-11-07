@@ -9,8 +9,8 @@ import java.util.*;
 
 public class ParanormalEventManager {
 
-    private static final int MIN_DELAY = 20 * 60;
-    private static final int MAX_DELAY = 20 * 180;
+    private static final int MIN_DELAY = 20 * 3; // Default is 20*60, testing is 20*3
+    private static final int MAX_DELAY = 20 * 6; // Default is 20*180, testing is 20*6
 
     private final Map<UUID, Integer> timers = new HashMap<>();
 
@@ -25,6 +25,7 @@ public class ParanormalEventManager {
         activeKnockingSequences.removeIf(KnockingSequence::tick);
         activeChestSequences.removeIf(ChestSequence::tick);
         activeTrapdoorSequences.removeIf(TrapdoorSequence::tick);
+        activeLadderSoundSequences.removeIf(LadderSoundSequence::tick);
 
         for (ServerPlayer player : event.getServer()
                 .getPlayerList().getPlayers()) {
@@ -88,6 +89,7 @@ public class ParanormalEventManager {
             new WeightedEvent(new KnockingEvent(this), 16),
             new WeightedEvent(new ChestEvent(this), 10),
             new WeightedEvent(new TrapdoorEvent(this), 10),
+            new WeightedEvent(new LadderSoundEvent(this), 12),
             new WeightedEvent(new TorchEvent(), 4),
             new WeightedEvent(new WhisperEvent(), 10),
             new WeightedEvent(new ParticleEvent(), 2),
@@ -99,10 +101,12 @@ public class ParanormalEventManager {
     private final List<KnockingSequence> activeKnockingSequences = new ArrayList<>();
     private final List<ChestSequence> activeChestSequences = new ArrayList<>();
     private final List<TrapdoorSequence> activeTrapdoorSequences = new ArrayList<>();
+    private final List<LadderSoundSequence> activeLadderSoundSequences = new ArrayList<>();
 
     public void addFootstepSequence(FootstepSequence sequence) {activeSequences.add(sequence);}
     public void addDelayedDoorAction(DelayedDoorAction action) {delayedDoorActions.add(action);}
     public void addKnockingSequence(KnockingSequence sequence) {activeKnockingSequences.add(sequence);}
     public void addChestSequence(ChestSequence sequence) {activeChestSequences.add(sequence);}
     public void addTrapdoorSequence(TrapdoorSequence sequence) {activeTrapdoorSequences.add(sequence);}
+    public void addLadderSoundSequence(LadderSoundSequence sequence) {activeLadderSoundSequences.add(sequence);}
 }
