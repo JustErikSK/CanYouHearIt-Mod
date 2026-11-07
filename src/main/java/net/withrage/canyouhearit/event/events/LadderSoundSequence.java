@@ -63,7 +63,7 @@ public class LadderSoundSequence {
 
         double y = startY + (soundsPlayed * 0.4 * direction);
 
-        float volume = 0.5F;
+        float volume = 0.3F;
         float pitch = 0.85F + player.getRandom().nextFloat() * 0.3F;
 
         player.connection.send(
