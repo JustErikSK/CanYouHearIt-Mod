@@ -29,6 +29,7 @@ public class ParanormalEventManager {
         activeMinecartSoundSequences.removeIf(MinecartSoundSequence::tick);
         activeFalseBlockBreakingSequences.removeIf(FalseBlockBreakingSequence::tick);
         activePageTurningSequences.removeIf(PageTurningSequence::tick);
+        activeButtonPressSequences.removeIf(ButtonPressSequence::tick);
 
         for (ServerPlayer player : event.getServer()
                 .getPlayerList().getPlayers()) {
@@ -96,6 +97,7 @@ public class ParanormalEventManager {
             new WeightedEvent(new MinecartSoundEvent(this), 6),
             new WeightedEvent(new FalseBlockBreakingEvent(this), 10),
             new WeightedEvent(new PageTurningEvent(this), 8),
+            new WeightedEvent(new ButtonPressEvent(this), 8),
             new WeightedEvent(new TorchEvent(), 4),
             new WeightedEvent(new WhisperEvent(), 10),
             new WeightedEvent(new ParticleEvent(), 2),
@@ -111,6 +113,7 @@ public class ParanormalEventManager {
     private final List<MinecartSoundSequence> activeMinecartSoundSequences = new ArrayList<>();
     private final List<FalseBlockBreakingSequence> activeFalseBlockBreakingSequences = new ArrayList<>();
     private final List<PageTurningSequence> activePageTurningSequences = new ArrayList<>();
+    private final List<ButtonPressSequence> activeButtonPressSequences = new ArrayList<>();
 
     public void addFootstepSequence(FootstepSequence sequence) {activeSequences.add(sequence);}
     public void addDelayedDoorAction(DelayedDoorAction action) {delayedDoorActions.add(action);}
@@ -121,4 +124,5 @@ public class ParanormalEventManager {
     public void addMinecartSoundSequence(MinecartSoundSequence sequence) {activeMinecartSoundSequences.add(sequence);}
     public void addFalseBlockBreakingSequence(FalseBlockBreakingSequence sequence) {activeFalseBlockBreakingSequences.add(sequence);}
     public void addPageTurningSequence(PageTurningSequence sequence) {activePageTurningSequences.add(sequence);}
+    public void addButtonPressSequence(ButtonPressSequence sequence) {activeButtonPressSequences.add(sequence);}
 }
