@@ -1,5 +1,6 @@
 {
   "whisper": {
+    "subtitle": "subtitles.canyouhearit.whisper",
     "sounds": [
       "canyouhearit:behind_you",
       "canyouhearit:breathing",
