@@ -55,9 +55,9 @@ public class WhisperEvent implements ParanormalEvent {
         }
 
         float volume = switch (type) {
-            case 0 -> 0.65F;
+            case 0 -> 0.8F;
             case 1 -> 0.9F;
-            default -> 0.55F;
+            default -> 0.7F;
         };
 
         float pitch = 0.9F
