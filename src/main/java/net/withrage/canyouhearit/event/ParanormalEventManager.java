@@ -9,8 +9,8 @@ import java.util.*;
 
 public class ParanormalEventManager {
 
-    private static final int MIN_DELAY = 20 * 3; // Default is 20*60, testing is 20*3
-    private static final int MAX_DELAY = 20 * 6; // Default is 20*180, testing is 20*6
+    private static final int MIN_DELAY = 20 * 60; // Default is 20*60, testing is 20*3
+    private static final int MAX_DELAY = 20 * 180; // Default is 20*180, testing is 20*6
 
     private final Map<UUID, Integer> timers = new HashMap<>();
 
