@@ -27,6 +27,7 @@ public class ParanormalEventManager {
         activeTrapdoorSequences.removeIf(TrapdoorSequence::tick);
         activeLadderSoundSequences.removeIf(LadderSoundSequence::tick);
         activeMinecartSoundSequences.removeIf(MinecartSoundSequence::tick);
+        activeFalseBlockBreakingSequences.removeIf(FalseBlockBreakingSequence::tick);
 
         for (ServerPlayer player : event.getServer()
                 .getPlayerList().getPlayers()) {
@@ -92,6 +93,7 @@ public class ParanormalEventManager {
             new WeightedEvent(new TrapdoorEvent(this), 10),
             new WeightedEvent(new LadderSoundEvent(this), 12),
             new WeightedEvent(new MinecartSoundEvent(this), 6),
+            new WeightedEvent(new FalseBlockBreakingEvent(this), 10),
             new WeightedEvent(new TorchEvent(), 4),
             new WeightedEvent(new WhisperEvent(), 10),
             new WeightedEvent(new ParticleEvent(), 2),
@@ -105,6 +107,7 @@ public class ParanormalEventManager {
     private final List<TrapdoorSequence> activeTrapdoorSequences = new ArrayList<>();
     private final List<LadderSoundSequence> activeLadderSoundSequences = new ArrayList<>();
     private final List<MinecartSoundSequence> activeMinecartSoundSequences = new ArrayList<>();
+    private final List<FalseBlockBreakingSequence> activeFalseBlockBreakingSequences = new ArrayList<>();
 
     public void addFootstepSequence(FootstepSequence sequence) {activeSequences.add(sequence);}
     public void addDelayedDoorAction(DelayedDoorAction action) {delayedDoorActions.add(action);}
@@ -113,4 +116,5 @@ public class ParanormalEventManager {
     public void addTrapdoorSequence(TrapdoorSequence sequence) {activeTrapdoorSequences.add(sequence);}
     public void addLadderSoundSequence(LadderSoundSequence sequence) {activeLadderSoundSequences.add(sequence);}
     public void addMinecartSoundSequence(MinecartSoundSequence sequence) {activeMinecartSoundSequences.add(sequence);}
+    public void addFalseBlockBreakingSequence(FalseBlockBreakingSequence sequence) {activeFalseBlockBreakingSequences.add(sequence);}
 }
